@@ -23,8 +23,6 @@ function setCardType(type) {
   ccLogo.setAttribute("src", `/cc-${type}.svg`);
 }
 
-globalThis.setCardType = setCardType;
-
 const cvcInput = document.querySelector("#security-code");
 const cvcPattern = { mask: "0000" };
 const cvcMasked = IMask(cvcInput, cvcPattern);
@@ -80,3 +78,46 @@ const cardNumberPattern = {
 };
 
 const cardNumberMasked = IMask(cardNumber, cardNumberPattern);
+
+const addButton = document.getElementById("add-card");
+addButton.addEventListener("click", () => {
+  alert("Cartão adicionado!");
+});
+
+document.querySelector("form").addEventListener("submit", (event) => {
+  event.preventDefault();
+});
+
+const cardHolder = document.querySelector("#card-holder");
+
+cardHolder.addEventListener("input", () => {
+  const ccHolder = document.querySelector(".cc-holder .value");
+  ccHolder.innerText = cardHolder.value.trim() || "FULANO DA SILVA";
+});
+
+cvcMasked.on("accept", () => updateSecurityCode(cvcMasked.value));
+
+function updateSecurityCode(code) {
+  const ccSecurityValue = document.querySelector(".cc-security .value");
+  ccSecurityValue.innerText = code.trim() || "123";
+}
+
+cardNumberMasked.on("accept", () => {
+  const cardType = cardNumberMasked.masked.currentMask.cardtype;
+  setCardType(cardType);
+  updateCardNumber(cardNumberMasked.value);
+});
+
+function updateCardNumber(cardNumber) {
+  const ccNumberValue = document.querySelector(".cc-info .cc-number");
+  ccNumberValue.innerText = cardNumber.trim() || "1234 5678 9012 3456";
+}
+
+expirationDateMasked.on("accept", () => {
+  updateCardExpiration(expirationDateMasked.value);
+});
+
+function updateCardExpiration(cardExpiration) {
+  const ccExpirationDateValue = document.querySelector(".cc-expiration .value");
+  ccExpirationDateValue.innerText = cardExpiration.trim() || "02/32";
+}
