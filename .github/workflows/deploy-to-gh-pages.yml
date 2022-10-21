@@ -2,11 +2,16 @@ on:
   push:
     branches: [master]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Setup Node.js
@@ -19,11 +24,20 @@ jobs:
 
       - name: Build
         run: npm run build
+  deploy:
+    environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v2
 
-      - name: Deploy
-        run: |
-          cd dist
-          git init
-          git checkout -B main
-          git add -A
-          git commit -m "deploy" && git push -f git@github.com:marcelsby/${{ github.repository }}.git main:gh-pages
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'dist'
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v1
+
