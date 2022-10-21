@@ -3,7 +3,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -16,11 +16,7 @@ jobs:
 
       - name: Build
         run: npm ci
+
+      - name: deploy
+        run: cd dist && git init && git checkout -B main && git add -A && git commit -m "deploy" && git push -f git@github.com:marcelsby/${{ github.repository }}.git main:gh-pages
       
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - run: cd dist
-      - run: git init && git checkout -B main && git add -A && git commit -m "deploy"
-      - run: git push -f git@github.com:marcelsby/${{ github.repository }}.git main:gh-pages
