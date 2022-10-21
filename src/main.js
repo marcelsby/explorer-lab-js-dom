@@ -1,6 +1,10 @@
 import "./css/index.css";
 import IMask from "imask";
 
+import mastercardLogo from "./assets/images/cc-mastercard.svg";
+import visaLogo from "./assets/images/cc-visa.svg";
+import defaultLogo from "./assets/images/cc-default.svg";
+
 const ccBgColor01 = document.querySelector(
   ".cc-bg > svg > g > g:nth-child(1) > path"
 );
@@ -18,9 +22,15 @@ function setCardType(type) {
     default: ["black", "grey"],
   };
 
+  const logos = {
+    visa: visaLogo,
+    mastercard: mastercardLogo,
+    default: defaultLogo,
+  };
+
   ccBgColor01.setAttribute("fill", colors[type][0]);
   ccBgColor02.setAttribute("fill", colors[type][1]);
-  ccLogo.setAttribute("src", `/cc-${type}.svg`);
+  ccLogo.setAttribute("src", logos[type]);
 }
 
 const cvcInput = document.querySelector("#security-code");
