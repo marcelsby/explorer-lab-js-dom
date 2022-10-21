@@ -18,5 +18,11 @@ jobs:
         run: npm ci
 
       - name: deploy
-        run: cd dist && git init && git checkout -B main && git add -A && git commit -m "deploy" && git push -f git@github.com:marcelsby/${{ github.repository }}.git main:gh-pages
+        # run: |
+        #   cd dist
+        #   git init
+        #   git checkout -B main
+        #   git add -A
+        #   git commit -m "deploy" && git push -f git@github.com:marcelsby/${{ github.repository }}.git main:gh-pages
+        run: ls
       
