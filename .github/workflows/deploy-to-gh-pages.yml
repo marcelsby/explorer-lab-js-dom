@@ -1,0 +1,26 @@
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with: 
+          node-version: 16
+
+      - name: Build
+        run: npm ci
+      
+  deploy:
+    needs: steps
+    runs-on: ubuntu-latest
+    steps:
+      - run: cd dist
+      - run: git init && git checkout -B main && git add -A && git commit -m "deploy"
+      - run: git push -f git@github.com:marcelsby/${{ github.repository }}.git main:gh-pages
