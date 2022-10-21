@@ -14,6 +14,7 @@ const ccBgColor02 = document.querySelector(
 );
 
 const ccLogo = document.querySelector(".cc-logo span:nth-child(2) img");
+ccLogo.setAttribute("src", defaultLogo);
 
 function setCardType(type) {
   const colors = {
