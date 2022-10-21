@@ -18,7 +18,7 @@ jobs:
         run: npm ci
       
   deploy:
-    needs: steps
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - run: cd dist
